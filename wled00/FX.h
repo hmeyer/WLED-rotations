@@ -120,8 +120,6 @@
 #define IS_REVERSE      ((SEGMENT.options & REVERSE     ) == REVERSE     )
 #define IS_SELECTED     ((SEGMENT.options & SELECTED    ) == SELECTED    )
 
-#define MODE_COUNT 190// WLEDSR: First 128 for AC (incl reserved), rest for SR
-
 #define FX_MODE_STATIC                   0
 #define FX_MODE_BLINK                    1
 #define FX_MODE_BREATH                   2
@@ -319,7 +317,10 @@
 #define FX_MODE_2DAKEMI                186
 #define FX_MODE_CUSTOMEFFECT           187 //WLEDSR Custom Effects
 #define FX_MODE_3DRIPPLES              188
-#define FX_MODE_3DSphereMove        189
+#define FX_MODE_3DSphereMove           189
+
+#define MODE_COUNT 191// WLEDSR: First 128 for AC (incl reserved), rest for SR
+
 
 #define floatNull -32768 //WLEDSR Custom Effects
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -847,7 +848,9 @@ class WS2812FX {
       deserializeMap(uint8_t n=0);
 
     inline void setPixelColor(int n, uint32_t c) {setPixelColor(n, byte(c>>16), byte(c>>8), byte(c), byte(c>>24));}
-
+    int _rotationOffset = -1;
+    inline int getRotationOffset() { if (_rotationOffset == -1) updateRotationOffset(); return _rotationOffset; }
+    void updateRotationOffset();
     bool
       gammaCorrectBri = false,
       gammaCorrectCol = true,
