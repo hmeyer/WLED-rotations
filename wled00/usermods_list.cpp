@@ -49,14 +49,14 @@
 #include "../usermods/BNO08x/usermod_bno08x.h"
 #endif
 #ifdef USERMOD_FOUR_LINE_DISPLAY
-  #ifdef USE_ALT_DISPlAY
+  #if defined(USE_ALT_DISPLAY) || defined(USE_ALT_DISPlAY)
     #include "../usermods/usermod_v2_four_line_display_ALT/usermod_v2_four_line_display_ALT.h"
   #else
     #include "../usermods/usermod_v2_four_line_display/usermod_v2_four_line_display.h"
   #endif
 #endif
 #ifdef USERMOD_ROTARY_ENCODER_UI
-  #ifdef USE_ALT_DISPlAY
+  #if defined(USE_ALT_DISPLAY) || defined(USE_ALT_DISPlAY)
     #include "../usermods/usermod_v2_rotary_encoder_ui_ALT/usermod_v2_rotary_encoder_ui_ALT.h"
   #else
     #include "../usermods/usermod_v2_rotary_encoder_ui/usermod_v2_rotary_encoder_ui.h"
@@ -130,6 +130,12 @@
 #ifdef USERMOD_SI7021_MQTT_HA
 #include "../usermods/Si7021_MQTT_HA/usermod_si7021_mqtt_ha.h"
 #endif
+
+//WLEDMM ARTI-FX
+#ifdef USERMOD_ARTIFX
+#include "../usermods/artifx/usermod_v2_artifx.h"
+#endif
+
 
 void registerUsermods()
 {
@@ -248,5 +254,10 @@ void registerUsermods()
   
   #ifdef USERMOD_SI7021_MQTT_HA
   usermods.add(new Si7021_MQTT_HA());
+  #endif
+
+  //WLEDMM ARTI-FX
+  #ifdef USERMOD_ARTIFX
+  usermods.add(new ARTIFXUserMod());
   #endif
 }
