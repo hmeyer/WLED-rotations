@@ -26,6 +26,7 @@
 #include "wled.h"
 #include "FX.h"
 #include "palettes.h"
+#include "../usermods/BNO08x/usermod_bno08x.h"
 
 /*
   Custom per-LED mapping has moved!
@@ -253,6 +254,20 @@ uint16_t IRAM_ATTR WS2812FX::segmentToLogical(uint16_t i) { // ewowi20210703: wi
   return logicalIndex;
 }
 
+void WS2812FX::updateRotationOffset() {
+  UsermodBNO08x *um_bno08x = static_cast<UsermodBNO08x *>(usermods.lookup(USERMOD_ID_BNO08x));
+  if (!um_bno08x)
+  {
+    DEBUG_PRINTLN(F("USERMOD_BNO08x not found."));
+  } else {
+    _rotationOffset = um_bno08x->getYawNorm() * SEGLEN;
+    // DEBUG_PRINT(F("SEGLEN="));
+    // DEBUG_PRINT(SEGLEN);
+    // DEBUG_PRINT(F(" rotationOffset="));
+    // DEBUG_PRINTLN(_rotationOffset);
+  }
+}
+
 void IRAM_ATTR WS2812FX::setPixelColor(int i, byte r, byte g, byte b, byte w)
 {
   uint8_t segIdx;
@@ -262,6 +277,11 @@ void IRAM_ATTR WS2812FX::setPixelColor(int i, byte r, byte g, byte b, byte w)
   if (i<0) return;  // some effects, like bouncing balls, produce negative values
 
   if (SEGLEN) { // SEGLEN!=0 -> from segment/FX
+    int o = getRotationOffset();
+    if (o != -1) {
+      i = (i + o) % SEGLEN;
+    }
+  
     //color_blend(getpixel, col, _bri_t); (pseudocode for future blending of segments)
     if (_bri_t < 255) {
       r = scale8(r, _bri_t);
@@ -421,6 +441,7 @@ void WS2812FX::show(void) {
   if (diff > 0) fpsCurr = 1000 / diff;
   _cumulativeFps = (3 * _cumulativeFps + fpsCurr) >> 2;
   _lastShow = now;
+  _rotationOffset = -1;  
 }
 
 /**

@@ -864,6 +864,10 @@ class WS2812FX {
 
     inline void setPixelColor(int n, uint32_t c) {setPixelColor(n, byte(c>>16), byte(c>>8), byte(c), byte(c>>24));}
 
+    int _rotationOffset = -1;
+    inline int getRotationOffset() { if (_rotationOffset == -1) updateRotationOffset(); return _rotationOffset; }
+    void updateRotationOffset();
+
     bool
       gammaCorrectBri = false,
       gammaCorrectCol = true,
