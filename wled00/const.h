@@ -79,6 +79,7 @@
 #define USERMOD_ID_BME280                30     //Usermod "usermod_bme280.h
 //WLEDMM
 #define USERMOD_ID_ARTIFX                31     //Usermod "usermod_v2_artifx.h"
+#define USERMOD_ID_BNO08x                32     //Usermod "usermod_bno08x.h
 
 //Access point behavior
 #define AP_BEHAVIOR_BOOT_NO_CONN          0     //Open AP when no connection after boot
