@@ -45,6 +45,9 @@
 #ifdef USERMOD_BME280
 #include "../usermods/BME280_v2/usermod_bme280.h"
 #endif
+#ifdef USERMOD_BNO08x
+#include "../usermods/BNO08x/usermod_bno08x.h"
+#endif
 #ifdef USERMOD_FOUR_LINE_DISPLAY
   #ifdef USE_ALT_DISPlAY
     #include "../usermods/usermod_v2_four_line_display_ALT/usermod_v2_four_line_display_ALT.h"
@@ -159,6 +162,9 @@ void registerUsermods()
 
   #ifdef USERMOD_BME280
   usermods.add(new UsermodBME280());
+  #endif
+  #ifdef USERMOD_BNO08x
+  usermods.add(new UsermodBNO08x());
   #endif
   #ifdef USERMOD_SENSORSTOMQTT
   usermods.add(new UserMod_SensorsToMQTT());
